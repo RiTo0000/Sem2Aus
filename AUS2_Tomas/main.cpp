@@ -31,6 +31,7 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium);
 void zoradenieUJ(bool obec);
 template <typename T>
 void prepisMedziPolami(UnsortedSequenceTable<wstring, UzemnaJednotka*>* finalData, UnsortedSequenceTable<wstring, T>* data);
+void filterTypPrislusnost(UnsortedSequenceTable<wstring, UzemnaJednotka*>* finalData);
 
 int main() {
 	//initHeapMonitor();
@@ -62,33 +63,14 @@ void vyberFiltraVypis(bool vypisObec) {
 	FilterUJ<wstring>* fujnazov = new FilterUJNazov();
 	FilterUJ<int>* fujpocetObyvatelov = new FilterUJPocetObyvatelov();
 	FilterUJ<double>* fujzastavanost = new FilterUJZastavanost();
-	FilterUJ<UzemnaJednotka::typUJ>* fujtyp = new FilterUJTyp();
-	FilterUJ<wstring>* fujprislusnost = new FilterUJPrislusnost();
 	UnsortedSequenceTable<wstring, UzemnaJednotka*>* finalData = new UnsortedSequenceTable<wstring, UzemnaJednotka*>();
 
 	wstring nazovObce;
-	wstring prislusnost;
-	int cislo;
-	if (!vypisObec)
-	{
-		wcout << L"Vyber si typ" << endl;
-		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat, 0-nedefinovany" << endl;
-		do
-		{
-			wcin >> cislo;
-		} while (cislo < 0 || cislo > 4);
-		wcout << L"Zadaj prislusnost" << endl;
-		wcin.ignore();
-		getline(wcin, prislusnost);
-	}
-	else
-	{
-		wcin.ignore();
-	}
 	switch (vyber)
 	{
 	case 1:
 		wcout << L"Nazov obce" << endl;
+		wcin.ignore();
 		getline(wcin, nazovObce);
 		wcout << nazovObce << endl;
 		if (!fujnazov->splnaFilter(slovensko, nazovObce, finalData, vypisObec))
@@ -97,32 +79,7 @@ void vyberFiltraVypis(bool vypisObec) {
 		}
 		if (!vypisObec)
 		{
-			switch (cislo)
-			{
-			case 1 :
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, finalData, vypisObec);
-				break;
-			case 2:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, finalData, vypisObec);
-				break;
-			case 3:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, finalData, vypisObec);
-				break;
-			case 4:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, finalData, vypisObec);
-				break;
-			default:
-				break;
-			}
-			if (finalData->size() == 0)
-			{
-				wcout << L"ziadne data na vypis" << endl;
-				break;
-			}
-			if (prislusnost != L"nedefinovaný")
-			{
-				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
-			}
+			filterTypPrislusnost(finalData);
 		}
 		vypisUJ(finalData);
 		break;
@@ -136,32 +93,7 @@ void vyberFiltraVypis(bool vypisObec) {
 		}
 		if (!vypisObec)
 		{
-			switch (cislo)
-			{
-			case 1:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, finalData, vypisObec);
-				break;
-			case 2:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, finalData, vypisObec);
-				break;
-			case 3:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, finalData, vypisObec);
-				break;
-			case 4:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, finalData, vypisObec);
-				break;
-			default:
-				break;
-			}
-			if (finalData->size() == 0)
-			{
-				wcout << L"ziadne data na vypis" << endl;
-				break;
-			}
-			if (prislusnost != L"nedefinovaný")
-			{
-				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
-			}
+			filterTypPrislusnost(finalData);
 		}
 		vypisUJ(finalData);
 		break;
@@ -175,32 +107,7 @@ void vyberFiltraVypis(bool vypisObec) {
 		}
 		if (!vypisObec)
 		{
-			switch (cislo)
-			{
-			case 1:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, finalData, vypisObec);
-				break;
-			case 2:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, finalData, vypisObec);
-				break;
-			case 3:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, finalData, vypisObec);
-				break;
-			case 4:
-				fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, finalData, vypisObec);
-				break;
-			default:
-				break;
-			}
-			if (finalData->size() == 0)
-			{
-				wcout << L"ziadne data na vypis" << endl;
-				break;
-			}
-			if (prislusnost != L"nedefinovaný")
-			{
-				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
-			}
+			filterTypPrislusnost(finalData);
 		}
 		vypisUJ(finalData);
 		break;
@@ -213,10 +120,6 @@ void vyberFiltraVypis(bool vypisObec) {
 	fujpocetObyvatelov = nullptr;
 	delete fujzastavanost;
 	fujzastavanost = nullptr;
-	delete fujtyp;
-	fujtyp = nullptr;
-	delete fujprislusnost;
-	fujprislusnost = nullptr;
 	finalData = nullptr;
 }
 
@@ -308,36 +211,73 @@ void zoradenieUJ(bool obec)
 	kujzastavanost = nullptr;
 }
 
+void filterTypPrislusnost(UnsortedSequenceTable<wstring, UzemnaJednotka*>* finalData)
+{
+	FilterUJ<UzemnaJednotka::typUJ>* fujtyp = new FilterUJTyp();
+	FilterUJ<wstring>* fujprislusnost = new FilterUJPrislusnost();
+	wstring prislusnost;
+	int cislo;
+	wcout << L"Vyber si typ" << endl;
+	wcout << L"1-štát, 2-kraj, 3-okres, 4-obec, 0-nedefinovany" << endl;
+	do
+	{
+		wcin >> cislo;
+	} while (cislo < 0 || cislo > 4);
+	wcout << L"Zadaj prislusnost" << endl;
+	wcin.ignore();
+	getline(wcin, prislusnost);
+	wcout << prislusnost << endl;
+	switch (cislo - 1)
+	{
+	case UzemnaJednotka::typUJ::štát:
+		fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, finalData, false);
+		break;
+	case UzemnaJednotka::typUJ::kraj:
+		fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, finalData, false);
+		break;
+	case UzemnaJednotka::typUJ::okres:
+		fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, finalData, false);
+		break;
+	case UzemnaJednotka::typUJ::obec:
+		fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, finalData, false);
+		break;
+	default:
+		break;
+	}
+	if (finalData->size() == 0)
+	{
+		wcout << L"ziadne data na vypis" << endl;
+	}
+	if (prislusnost != L"nedefinovaný")
+	{
+		fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, false);
+	}
+	delete fujtyp;
+	fujtyp = nullptr;
+	delete fujprislusnost;
+	fujprislusnost = nullptr;
+}
+
 template<typename T>
 void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 {
 	UnsortedSequenceTable<wstring, UzemnaJednotka*>* dataUJ = new UnsortedSequenceTable<wstring, UzemnaJednotka*>();
 	UnsortedSequenceTable<wstring, T>* data = new UnsortedSequenceTable<wstring, T>();
 	QuickSort < wstring, T> * quickSort = new QuickSort < wstring, T> ();
-	FilterUJ<UzemnaJednotka::typUJ>* fujtyp = new FilterUJTyp();
-	FilterUJ<wstring>* fujprislusnost = new FilterUJPrislusnost();
 	
-	wstring prislusnost;
-	int cislo;
+
 	int poradie;
-	if (!obec)
-	{
-		wcout << L"Vyber si typ" << endl;
-		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat, 0-nedefinovany" << endl;
-		do
-		{
-			wcin >> cislo;
-		} while (cislo < 0 || cislo > 4);
-		wcout << L"Zadaj prislusnost" << endl;
-		wcin.ignore();
-		getline(wcin, prislusnost);
-	}
 	wcout << L"Vyber si zoradenie" << endl;
 	wcout << L"1-vzostupne, 2-zostupne" << endl;
 	do
 	{
 		wcin >> poradie;
 	} while (poradie < 1 || poradie > 2);
+	if (!obec)
+	{
+		data->insert(slovensko->getNazov(), kriterium->getHodnotu(slovensko, L""));
+		dataUJ->insert(slovensko->getNazov(), slovensko);
+	}
 	for (TableItem<wstring, UzemnaJednotka*>* kraj : *slovensko->vratNizsieUJ())
 	{
 		if (!obec)
@@ -361,31 +301,7 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 	}
 	if (!obec)
 	{
-		switch (cislo - 1)
-		{
-		case UzemnaJednotka::typUJ::obec:
-			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, dataUJ, obec);
-			break;
-		case UzemnaJednotka::typUJ::okres:
-			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, dataUJ, obec);
-			break;
-		case UzemnaJednotka::typUJ::kraj:
-			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, dataUJ, obec);
-			break;
-		case UzemnaJednotka::typUJ::štát:
-			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, dataUJ, obec);
-			break;
-		default:
-			break;
-		}
-		if (dataUJ->size() == 0)
-		{
-			wcout << L"ziadne data na vypis" << endl;
-		}
-		if (prislusnost != L"nedefinovaný")
-		{
-			fujprislusnost->splnaFilter(slovensko, prislusnost, dataUJ, obec);
-		}
+		filterTypPrislusnost(dataUJ);
 		prepisMedziPolami(dataUJ, data);
 	}
 	if (poradie == 1)
@@ -406,10 +322,6 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 	dataUJ = nullptr;
 	delete quickSort;
 	quickSort = nullptr;
-	delete fujtyp;
-	fujtyp = nullptr;
-	delete fujprislusnost;
-	fujprislusnost = nullptr;
 }
 
 template <typename T>

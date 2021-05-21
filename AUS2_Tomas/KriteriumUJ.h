@@ -34,7 +34,11 @@ public:
 
 bool KriteriumUJPrislusnost::getHodnotu(UzemnaJednotka* uzemnaJednotka, wstring pomParameter)
 {
-	return uzemnaJednotka->getVyssiaUJ()->getNazov() == pomParameter;
+	if (uzemnaJednotka->getVyssiaUJ() != nullptr)
+	{
+		return uzemnaJednotka->getVyssiaUJ()->getNazov() == pomParameter;
+	}
+	return false;
 }
 
 class KriteriumUJPocetPredproduktivnychObyvatelov : public KriteriumUJ<int, wstring> {

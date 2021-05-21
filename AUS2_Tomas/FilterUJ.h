@@ -49,6 +49,8 @@ bool FilterUJNazov::splnaFilter(UzemnaJednotka* stat, wstring filterKriterium, U
 			}
 		}
 	}
+	delete kriterium;
+	kriterium = nullptr;
 	return false;
 }
 
@@ -91,6 +93,8 @@ bool FilterUJPocetObyvatelov::splnaFilter(UzemnaJednotka* stat, int filterKriter
 			}
 		}
 	}
+	delete KPocObyvatelov;
+	KPocObyvatelov = nullptr;
 	return vypis;
 }
 
@@ -133,6 +137,8 @@ bool FilterUJZastavanost::splnaFilter(UzemnaJednotka* stat, double filterKriteri
 			}
 		}
 	}
+	delete Kzastavanost;
+	Kzastavanost = nullptr;
 	return vypis;
 }
 
@@ -157,6 +163,10 @@ bool FilterUJTyp::splnaFilter(UzemnaJednotka* stat, UzemnaJednotka::typUJ filter
 	{
 			finalData->remove(item->getKey());
 	}
+	delete Ktyp;
+	Ktyp = nullptr;
+	delete deleteData;
+	deleteData = nullptr;
 	return true;
 }
 
@@ -181,5 +191,9 @@ bool FilterUJPrislusnost::splnaFilter(UzemnaJednotka* stat, wstring filterKriter
 	{
 		finalData->remove(item->getKey());
 	}
+	delete Kpripustnost;
+	Kpripustnost = nullptr;
+	delete deleteData;
+	deleteData = nullptr;
 	return true;
 }

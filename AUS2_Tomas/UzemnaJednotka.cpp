@@ -28,7 +28,7 @@ UzemnaJednotka::typUJ UzemnaJednotka::getTyp()
 
 UzemnaJednotka* UzemnaJednotka::getVyssiaUJ()
 {
-	return vyssiaUJ;
+	return this->vyssiaUJ;
 }
 
 void UzemnaJednotka::nastavudajeUJ(int predproduktivniObyvatelia, int produktivniObyvatelia, int poproduktivniObyvatelia, double celkovaVymera, double zastavanaPlocha)
