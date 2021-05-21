@@ -39,9 +39,6 @@
     <ClCompile Include="Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Obec.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UzemnaJednotka.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
       <Filter>Header Files\structures</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Obec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UzemnaJednotka.h">

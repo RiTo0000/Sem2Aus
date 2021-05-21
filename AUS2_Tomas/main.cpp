@@ -81,11 +81,14 @@ void vyberFiltraVypis(bool vypisObec) {
 		wcin.ignore();
 		getline(wcin, prislusnost);
 	}
+	else
+	{
+		wcin.ignore();
+	}
 	switch (vyber)
 	{
 	case 1:
 		wcout << L"Nazov obce" << endl;
-		wcin.ignore();
 		getline(wcin, nazovObce);
 		wcout << nazovObce << endl;
 		if (!fujnazov->splnaFilter(slovensko, nazovObce, finalData, vypisObec))
@@ -237,7 +240,7 @@ void vypisUJ(UnsortedSequenceTable<wstring, UzemnaJednotka*>* finalData)
 			wcout << Knazov->getHodnotu(help, L"") << L" ";
 			help = help->getVyssiaUJ();
 		}
-		wcout << endl;
+		wcout << Knazov->getHodnotu(help, L"") << endl;
 		wcout << L"Pocet obyvatelov: " << KPocObyvatelov->getHodnotu(item->accessData(), L"") << endl;
 		wcout << L"Pocet predproduktivnych obyvatelov: " << KPocPredprodObyv->getHodnotu(item->accessData(), L"") << endl;
 		wcout << L"Pocet produktivnych obyvatelov: " << KPocProdObyv->getHodnotu(item->accessData(), L"") << endl;
@@ -358,18 +361,18 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 	}
 	if (!obec)
 	{
-		switch (cislo)
+		switch (cislo - 1)
 		{
-		case 1:
+		case UzemnaJednotka::typUJ::obec:
 			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::obec, dataUJ, obec);
 			break;
-		case 2:
+		case UzemnaJednotka::typUJ::okres:
 			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::okres, dataUJ, obec);
 			break;
-		case 3:
+		case UzemnaJednotka::typUJ::kraj:
 			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::kraj, dataUJ, obec);
 			break;
-		case 4:
+		case UzemnaJednotka::typUJ::štát:
 			fujtyp->splnaFilter(slovensko, UzemnaJednotka::typUJ::štát, dataUJ, obec);
 			break;
 		default:

@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Obec.cpp" />
     <ClCompile Include="structures\ds_routines.cpp" />
     <ClCompile Include="structures\structure.cpp" />
     <ClCompile Include="structures\table\sorting\sort.cpp" />
@@ -34,7 +33,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Kriterium.h" />
     <ClInclude Include="KriteriumUJ.h" />
-    <ClInclude Include="Obec.h" />
     <ClInclude Include="structures\array\array.h" />
     <ClInclude Include="structures\ds_routines.h" />
     <ClInclude Include="structures\ds_structure_types.h" />

@@ -20,7 +20,11 @@ bool FilterUJNazov::splnaFilter(UzemnaJednotka* stat, wstring filterKriterium, U
 
 	Kriterium<UzemnaJednotka*, wstring, wstring>* kriterium = new KriteriumUJNazov();
 
-
+	if (kriterium->getHodnotu(stat, L"") == filterKriterium && !vypisOsob)
+	{
+		finalData->insert(stat->getNazov(), stat);
+		return true;
+	}
 	for (TableItem<wstring, UzemnaJednotka*>* kraj : *stat->vratNizsieUJ())
 	{
 		if (kriterium->getHodnotu(kraj->accessData(), L"") == filterKriterium && !vypisOsob)
@@ -58,6 +62,11 @@ bool FilterUJPocetObyvatelov::splnaFilter(UzemnaJednotka* stat, int filterKriter
 {
 	Kriterium<UzemnaJednotka*, int, wstring>* KPocObyvatelov = new KriteriumUJPocetObyvatelov();
 	bool vypis = false;
+	if (KPocObyvatelov->getHodnotu(stat, L"") >= filterKriterium && !vypisOsob)
+	{
+		finalData->insert(stat->getNazov(), stat);
+		vypis = true;
+	}
 	for (TableItem<wstring, UzemnaJednotka*>* kraj : *stat->vratNizsieUJ())
 	{
 		if (KPocObyvatelov->getHodnotu(kraj->accessData(), L"") >= filterKriterium && !vypisOsob)
@@ -95,6 +104,11 @@ bool FilterUJZastavanost::splnaFilter(UzemnaJednotka* stat, double filterKriteri
 {
 	Kriterium<UzemnaJednotka*, double, wstring>* Kzastavanost = new KriteriumUJZastavanost();
 	bool vypis = false;
+	if (Kzastavanost->getHodnotu(stat, L"") >= filterKriterium && !vypisOsob)
+	{
+		finalData->insert(stat->getNazov(), stat);
+		vypis = true;
+	}
 	for (TableItem<wstring, UzemnaJednotka*>* kraj : *stat->vratNizsieUJ())
 	{
 		if (Kzastavanost->getHodnotu(kraj->accessData(), L"") >= filterKriterium && !vypisOsob)
