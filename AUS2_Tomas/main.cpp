@@ -72,11 +72,11 @@ void vyberFiltraVypis(bool vypisObec) {
 	if (!vypisObec)
 	{
 		wcout << L"Vyber si typ" << endl;
-		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat" << endl;
+		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat, 0-nedefinovany" << endl;
 		do
 		{
 			wcin >> cislo;
-		} while (cislo < 1 || cislo > 4);
+		} while (cislo < 0 || cislo > 4);
 		wcout << L"Zadaj prislusnost" << endl;
 		wcin.ignore();
 		getline(wcin, prislusnost);
@@ -116,7 +116,10 @@ void vyberFiltraVypis(bool vypisObec) {
 				wcout << L"ziadne data na vypis" << endl;
 				break;
 			}
-			fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			if (prislusnost != L"nedefinovaný")
+			{
+				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			}
 		}
 		vypisUJ(finalData);
 		break;
@@ -152,7 +155,10 @@ void vyberFiltraVypis(bool vypisObec) {
 				wcout << L"ziadne data na vypis" << endl;
 				break;
 			}
-			fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			if (prislusnost != L"nedefinovaný")
+			{
+				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			}
 		}
 		vypisUJ(finalData);
 		break;
@@ -188,7 +194,10 @@ void vyberFiltraVypis(bool vypisObec) {
 				wcout << L"ziadne data na vypis" << endl;
 				break;
 			}
-			fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			if (prislusnost != L"nedefinovaný")
+			{
+				fujprislusnost->splnaFilter(slovensko, prislusnost, finalData, vypisObec);
+			}
 		}
 		vypisUJ(finalData);
 		break;
@@ -301,24 +310,31 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 {
 	UnsortedSequenceTable<wstring, UzemnaJednotka*>* dataUJ = new UnsortedSequenceTable<wstring, UzemnaJednotka*>();
 	UnsortedSequenceTable<wstring, T>* data = new UnsortedSequenceTable<wstring, T>();
-	QuickSort<wstring, T>* quickSort = new QuickSort<wstring, T>();
+	QuickSort < wstring, T> * quickSort = new QuickSort < wstring, T> ();
 	FilterUJ<UzemnaJednotka::typUJ>* fujtyp = new FilterUJTyp();
 	FilterUJ<wstring>* fujprislusnost = new FilterUJPrislusnost();
 	
 	wstring prislusnost;
 	int cislo;
+	int poradie;
 	if (!obec)
 	{
 		wcout << L"Vyber si typ" << endl;
-		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat" << endl;
+		wcout << L"1-obec, 2-okres, 3-kraj, 4-stat, 0-nedefinovany" << endl;
 		do
 		{
 			wcin >> cislo;
-		} while (cislo < 1 || cislo > 4);
+		} while (cislo < 0 || cislo > 4);
 		wcout << L"Zadaj prislusnost" << endl;
 		wcin.ignore();
 		getline(wcin, prislusnost);
 	}
+	wcout << L"Vyber si zoradenie" << endl;
+	wcout << L"1-vzostupne, 2-zostupne" << endl;
+	do
+	{
+		wcin >> poradie;
+	} while (poradie < 1 || poradie > 2);
 	for (TableItem<wstring, UzemnaJednotka*>* kraj : *slovensko->vratNizsieUJ())
 	{
 		if (!obec)
@@ -363,10 +379,21 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 		{
 			wcout << L"ziadne data na vypis" << endl;
 		}
-		fujprislusnost->splnaFilter(slovensko, prislusnost, dataUJ, obec);
+		if (prislusnost != L"nedefinovaný")
+		{
+			fujprislusnost->splnaFilter(slovensko, prislusnost, dataUJ, obec);
+		}
 		prepisMedziPolami(dataUJ, data);
 	}
-	quickSort->sort(*data);
+	if (poradie == 1)
+	{
+		quickSort->sort(*data, std::less_equal<T>());
+	}
+	else
+	{
+		quickSort->sort(*data, std::greater<T>());
+	}
+	
 	for (TableItem<wstring, T>* item : *data)
 	{
 		wcout << item->getKey() << L" " << item->accessData() << endl;
