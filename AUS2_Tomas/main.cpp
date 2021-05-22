@@ -349,7 +349,7 @@ void menu()
 	wcout << L"2: Zoradenie obcí" << endl;
 	wcout << L"3: Vypísanie informácií o územných jednotkách " << endl;
 	wcout << L"4: Zoradenie územných jednotiek sĺňajúcich daný filter " << endl;
-	wcout << L"0: Koniec / Exit" << endl << endl;
+	wcout << L"0: Koniec " << endl << endl;
 
 	do
 	{
@@ -380,8 +380,11 @@ void menu()
 		break;
 	}
 
-	wcout << L"Ak chcete v programe pokracovat stlacte 0: ";
-	wcin >> vyber;
+	do
+	{
+		wcout << L"Ak chcete v programe pokracovat stlacte 0 ak nie stlacte 1: ";
+		wcin >> vyber;
+	} while (vyber < 0 || vyber > 1);
 	if (vyber == 0)
 	{
 		menu();
