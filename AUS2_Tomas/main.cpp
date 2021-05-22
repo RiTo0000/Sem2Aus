@@ -264,7 +264,6 @@ void zoradenieUJlogika(bool obec, KriteriumUJ<T, wstring>* kriterium)
 	UnsortedSequenceTable<wstring, UzemnaJednotka*>* dataUJ = new UnsortedSequenceTable<wstring, UzemnaJednotka*>();
 	UnsortedSequenceTable<wstring, T>* data = new UnsortedSequenceTable<wstring, T>();
 	QuickSort < wstring, T> * quickSort = new QuickSort < wstring, T> ();
-	
 
 	int poradie;
 	wcout << L"Vyber si zoradenie" << endl;
